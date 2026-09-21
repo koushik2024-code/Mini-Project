@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.pytest_cache/*
+.coverage
+coverage/
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+.env
+data/*.json
+models/
+embeddings/cache/
+*.log
+*.keras
+*.h5
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+# SQLite search history database
+data/*.db
+data/*.db-journal
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.claude/settings.local.json

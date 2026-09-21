@@ -1,0 +1,88 @@
+embedding:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  device: "cpu"
+  cache_dir: "embeddings/cache"
+  batch_size: 32
+
+router:
+  model_path: "models/router/best_model.keras"
+  confidence_threshold: 0.50
+  fallback_tier: "medium"
+  hidden_dims: [512]
+  dropout_rate: 0.5
+
+# Use Ollama for local LLM inference (models already downloaded via Ollama)
+ollama:
+  host: "http://localhost:11434"
+  timeout: 180
+  models:
+    easy: "qwen3:1.7b"
+    medium: "qwen3:4b"
+    hard: "llama3.2:3b"
+
+# Kept for compatibility but not used when use_ollama=true
+models:
+  easy: "Qwen/Qwen3-1.7B-Instruct"
+  medium: "Qwen/Qwen3-4B-Instruct"
+  hard: "meta-llama/Llama-3.2-3B-Instruct"
+  device_map: "auto"
+  load_in_8bit: true
+  max_memory_gb: 12
+
+generation:
+  max_new_tokens: 512
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: true
+
+# Google Sign-In. Secrets come from the environment, never this file:
+#   GOOGLE_CLIENT_ID  - OAuth 2.0 Web client id from Google Cloud Console
+#   SESSION_SECRET    - >=32 byte random string used to sign session tokens
+auth:
+  google_client_id: ""        # leave blank; set GOOGLE_CLIENT_ID instead
+  session_ttl_hours: 24
+  require_verified_email: true
+
+# SQLite store for user search history
+database:
+  history_path: "data/history.db"
+  history_max_entries: 500
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  timeout: 120
+  workers: 1
+
+features:
+  use_mock_llms: false
+  use_ollama: true
+  enable_fallback: true
+  enable_safety_validation: false
+  enable_history: true
+
+logging:
+  log_raw_queries: false
+  log_fields: ["request_id", "predicted_class", "confidence", "selected_model", "fallback_used", "latency_ms", "error"]
+  level: "INFO"
+
+training:
+  epochs: 100
+  batch_size: 64
+  learning_rate: 0.0005
+  early_stopping_patience: 10
+  validation_split: 0.1
+  test_split: 0.1
+  class_weights: true
+  random_seed: 42
+
+data:
+  dataset_path: "data/router_dataset_single_label.jsonl"
+  text_field: "prompt"
+  label_field: "model_label"
+  preprocessing:
+    strip_whitespace: true
+    normalize_unicode: true
+    preserve_math: true
+    preserve_code: true
+    preserve_symbols: true

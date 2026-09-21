@@ -1,0 +1,4 @@
+[bandit]
+targets = .
+exclude_dirs = [./tests, ./frontend, ./data, ./models, ./embeddings/cache]
+skips = [B101, B601]
